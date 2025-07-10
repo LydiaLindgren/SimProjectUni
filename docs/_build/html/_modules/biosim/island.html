@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>biosim.island &#8212; Biosim 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for biosim.island</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">biosim.landscape</span> <span class="k">as</span> <span class="nn">ls</span>
+<span class="kn">from</span> <span class="nn">biosim.animals</span> <span class="kn">import</span> <span class="n">Herbivore</span><span class="p">,</span> <span class="n">Carnivore</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<div class="viewcode-block" id="Tile"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile">[docs]</a><span class="k">class</span> <span class="nc">Tile</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for each tile/cell on the island</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landscape</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">herbs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">carns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param landscape: the landscape of the tile</span>
+<span class="sd">        :type landscape: class</span>
+<span class="sd">        :param loc: the location-coordinates of the tile</span>
+<span class="sd">        :type loc: tuple e.g (3,3)</span>
+<span class="sd">        :param herbs: the current herbs on the tile</span>
+<span class="sd">        :type herbs: list</span>
+<span class="sd">        :param carns: the current carnivores on the tile</span>
+<span class="sd">        :type carns: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__loc__</span> <span class="o">=</span> <span class="n">loc</span>
+        <span class="k">if</span> <span class="n">herbs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">=</span> <span class="n">herbs</span>
+        <span class="k">if</span> <span class="n">carns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="o">=</span> <span class="n">carns</span>
+        <span class="k">if</span> <span class="n">landscape</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span>
+            <span class="n">landscape</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">Lowland</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">landscape</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="n">landscape</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">Highland</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">landscape</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
+            <span class="n">landscape</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">Desert</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">landscape</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;W&quot;</span><span class="p">:</span>
+            <span class="n">landscape</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">Water</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid landscape&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">landscape</span> <span class="o">=</span> <span class="n">landscape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_h</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_c</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mig_h</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mig_c</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traversable</span> <span class="o">=</span> <span class="n">landscape</span><span class="o">.</span><span class="n">traversable</span>
+
+<div class="viewcode-block" id="Tile.location"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.location">[docs]</a>    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that returns the location of the tile.</span>
+
+<span class="sd">        :return : self.__loc__</span>
+<span class="sd">        :rtype: tuple e.g (2,3)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__loc__</span></div>
+
+<div class="viewcode-block" id="Tile.x_coordinates"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.x_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">x_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that returns the x-coordinate of the tile.</span>
+
+<span class="sd">        :return: self.__loc__[0]</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__loc__</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Tile.y_coordinates"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.y_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">y_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that returns the y-coordinate of the tile.</span>
+
+<span class="sd">        :return: self.__loc__[1]</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__loc__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Tile.new_location"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.new_location">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">new_location</span><span class="p">(</span><span class="n">tile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A static method for finding a new tile for migration.</span>
+
+<span class="sd">        :param tile: the tile that animals migrate from</span>
+<span class="sd">        :type tile: Tile class</span>
+<span class="sd">        :return: new_loc</span>
+<span class="sd">        :rtype: tuple e.g (2,3)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="mf">0.25</span><span class="p">:</span>
+            <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile</span><span class="o">.</span><span class="n">x_coordinates</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">y_coordinates</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="mf">0.50</span><span class="p">:</span>
+            <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile</span><span class="o">.</span><span class="n">x_coordinates</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">y_coordinates</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+            <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile</span><span class="o">.</span><span class="n">x_coordinates</span><span class="p">(),</span> <span class="n">tile</span><span class="o">.</span><span class="n">y_coordinates</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_loc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile</span><span class="o">.</span><span class="n">x_coordinates</span><span class="p">(),</span> <span class="n">tile</span><span class="o">.</span><span class="n">y_coordinates</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_loc</span></div>
+
+<div class="viewcode-block" id="Tile.add_herb_to_tile"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.add_herb_to_tile">[docs]</a>    <span class="k">def</span> <span class="nf">add_herb_to_tile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">herbivore</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that adds a herbivore to the current tile.</span>
+
+<span class="sd">        :param herbivore: the herbivore that is being added to the tile</span>
+<span class="sd">        :type herbivore: Herbivore class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">herbivore</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tile.add_carn_to_tile"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.add_carn_to_tile">[docs]</a>    <span class="k">def</span> <span class="nf">add_carn_to_tile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carnivore</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that adds a carnivore to the current tile.</span>
+
+<span class="sd">        :param carnivore: the carnivore that is being added to the tile</span>
+<span class="sd">        :type carnivore: Carnivore class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">carnivore</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tile.migrants_herbs"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.migrants_herbs">[docs]</a>    <span class="k">def</span> <span class="nf">migrants_herbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">herb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that adds a herbivore to a temporary list when it is migrating.</span>
+
+<span class="sd">        :param herb: the migrating herbivore</span>
+<span class="sd">        :type hern: Herbivore class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">herb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tile.migrants_carns"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.migrants_carns">[docs]</a>    <span class="k">def</span> <span class="nf">migrants_carns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">carn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that adds a carnivore to a temporary list when it is migrating.</span>
+
+<span class="sd">        :param carn:  the migrating carnivore</span>
+<span class="sd">        :type carn: Carnivore class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">carn</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tile.integrate"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.integrate">[docs]</a>    <span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A class that integrates the migrating animals into the true list containing all</span>
+<span class="sd">        animals of that species in the current tile. This is done to fix the problem of</span>
+<span class="sd">        animals migrating twice a year.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_h</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_h</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_h</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_c</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_c</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_c</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Tile.feed_herbs"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.feed_herbs">[docs]</a>    <span class="k">def</span> <span class="nf">feed_herbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fodder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for &quot;feeding&quot; herbivores in the current tile. The herbivores eat in</span>
+<span class="sd">        descending order of fitness, until there is no more food to eat.</span>
+
+<span class="sd">        :param fodder: total amount of food in the current tile</span>
+<span class="sd">        :type fodder: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">animal</span><span class="p">:</span> <span class="n">animal</span><span class="o">.</span><span class="n">fitness</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fodder</span> <span class="o">&gt;</span> <span class="n">herb</span><span class="o">.</span><span class="n">F</span><span class="p">:</span>
+                    <span class="n">herb</span><span class="o">.</span><span class="n">eat</span><span class="p">(</span><span class="n">herb</span><span class="o">.</span><span class="n">F</span><span class="p">)</span>
+                    <span class="n">herb</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                    <span class="n">fodder</span> <span class="o">-=</span> <span class="n">herb</span><span class="o">.</span><span class="n">F</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">herb</span><span class="o">.</span><span class="n">eat</span><span class="p">(</span><span class="n">fodder</span><span class="p">)</span>
+                    <span class="n">herb</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                    <span class="n">fodder</span> <span class="o">-=</span> <span class="n">fodder</span></div>
+
+<div class="viewcode-block" id="Tile.feed_carns"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.feed_carns">[docs]</a>    <span class="k">def</span> <span class="nf">feed_carns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for &quot;hunting&quot;. The carnivores hunt in a random order, and each carnivore</span>
+<span class="sd">        hunt until it is full, or has tried to kill every herbivore on the current tile.</span>
+<span class="sd">        The herbivores are hunted in increasing order of fitness.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">animal</span><span class="p">:</span> <span class="n">animal</span><span class="o">.</span><span class="n">fitness</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                    <span class="n">herb_eaten</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                        <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">carn</span><span class="o">.</span><span class="n">fitness</span> <span class="o">&lt;</span> <span class="n">herb</span><span class="o">.</span><span class="n">fitness</span><span class="p">:</span>
+                            <span class="k">break</span>
+                        <span class="k">if</span> <span class="n">carn</span><span class="o">.</span><span class="n">herb_killed</span><span class="p">(</span><span class="n">herb</span><span class="o">.</span><span class="n">fitness</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">herb_eaten</span> <span class="o">&lt;</span> <span class="n">carn</span><span class="o">.</span><span class="n">F</span><span class="p">:</span>
+                                <span class="n">herb_eaten</span> <span class="o">+=</span> <span class="n">herb</span><span class="o">.</span><span class="n">weight</span>
+                                <span class="n">carn</span><span class="o">.</span><span class="n">eat</span><span class="p">(</span><span class="n">herb</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+                                <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                                <span class="n">herb</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="n">Herbivore</span><span class="o">.</span><span class="n">remove_animals</span><span class="p">()</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">carn</span><span class="o">.</span><span class="n">eat</span><span class="p">(</span><span class="n">carn</span><span class="o">.</span><span class="n">F</span> <span class="o">-</span> <span class="n">herb_eaten</span><span class="p">)</span>
+                                <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                                <span class="n">herb</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="n">Herbivore</span><span class="o">.</span><span class="n">remove_animals</span><span class="p">()</span>
+                                <span class="k">break</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">herb_survived</span> <span class="k">for</span> <span class="n">herb_survived</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span>
+                                  <span class="k">if</span> <span class="ow">not</span> <span class="n">herb_survived</span><span class="o">.</span><span class="n">dead</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Tile.birth_animal"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.birth_animal">[docs]</a>    <span class="k">def</span> <span class="nf">birth_animal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for calculating the births of the animals on the current tile,</span>
+<span class="sd">        and adds them to their respective lists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="n">breed_herb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                <span class="n">herb</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">herb</span><span class="o">.</span><span class="n">herb_birth</span><span class="p">(</span><span class="n">breed_herb</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+            <span class="n">breed_carn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">carn</span><span class="o">.</span><span class="n">carn_birth</span><span class="p">(</span><span class="n">breed_carn</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tile.animals_migrate"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.animals_migrate">[docs]</a>    <span class="k">def</span> <span class="nf">animals_migrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">get_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for calculating migration for all animals on the tile. They are added to a</span>
+<span class="sd">        temporary list in the new tile, and removed from the current tile.</span>
+
+<span class="sd">        :param loc: the coordinates of the current tile</span>
+<span class="sd">        :type loc: tuple e.g (3,3)</span>
+<span class="sd">        :param get_map: the island map</span>
+<span class="sd">        :type get_map: a nested list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="n">herb</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">herb</span><span class="o">.</span><span class="n">migrate</span><span class="p">():</span>
+                <span class="n">new_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_location</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">get_map</span><span class="p">[</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">traversable</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mig_h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">herb</span><span class="p">)</span>
+                    <span class="n">get_map</span><span class="p">[</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">migrants_herbs</span><span class="p">(</span><span class="n">herb</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_herb</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+            <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">carn</span><span class="o">.</span><span class="n">migrate</span><span class="p">():</span>
+                <span class="n">new_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_location</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">get_map</span><span class="p">[</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">traversable</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mig_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">carn</span><span class="p">)</span>
+                    <span class="n">get_map</span><span class="p">[</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">new_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">migrants_carns</span><span class="p">(</span><span class="n">carn</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_carn</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Tile.animals_age"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.animals_age">[docs]</a>    <span class="k">def</span> <span class="nf">animals_age</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for aging all animals in the current tile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                <span class="n">herb</span><span class="o">.</span><span class="n">update_age</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                <span class="n">carn</span><span class="o">.</span><span class="n">update_age</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Tile.animals_weight_loss"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.animals_weight_loss">[docs]</a>    <span class="k">def</span> <span class="nf">animals_weight_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function for the weightloss of all animals on the current tile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                <span class="n">herb</span><span class="o">.</span><span class="n">losing_weight</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                <span class="n">carn</span><span class="o">.</span><span class="n">losing_weight</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Tile.animals_dead"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.animals_dead">[docs]</a>    <span class="k">def</span> <span class="nf">animals_dead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that calculates the death of animals on the tile, and removes them from</span>
+<span class="sd">        their respective lists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span><span class="p">:</span>
+                <span class="n">herb</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                <span class="n">herb</span><span class="o">.</span><span class="n">death</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">herb</span> <span class="k">for</span> <span class="n">herb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">herb</span><span class="o">.</span><span class="n">dead</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span><span class="p">:</span>
+                <span class="n">carn</span><span class="o">.</span><span class="n">update_fitness</span><span class="p">()</span>
+                <span class="n">carn</span><span class="o">.</span><span class="n">death</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="o">=</span> <span class="p">[</span><span class="n">carn</span> <span class="k">for</span> <span class="n">carn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">carn</span><span class="o">.</span><span class="n">dead</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Tile.remove_herb"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.remove_herb">[docs]</a>    <span class="k">def</span> <span class="nf">remove_herb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the herbivores that moves to another tile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mig_h</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">herb_stay</span> <span class="k">for</span> <span class="n">herb_stay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">herbs</span> <span class="k">if</span> <span class="n">herb_stay</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mig_h</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mig_h</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Tile.remove_carn"><a class="viewcode-back" href="../../Island.html#biosim.island.Tile.remove_carn">[docs]</a>    <span class="k">def</span> <span class="nf">remove_carn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the herbivores that moves to another tile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mig_c</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="o">=</span> <span class="p">[</span><span class="n">carn_stay</span> <span class="k">for</span> <span class="n">carn_stay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">carns</span> <span class="k">if</span> <span class="n">carn_stay</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mig_c</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mig_c</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="Island"><a class="viewcode-back" href="../../Island.html#biosim.island.Island">[docs]</a><span class="k">class</span> <span class="nc">Island</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the Island for the simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geogr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param geogr: a nested lists of landscape-codes</span>
+<span class="sd">        :type nested lists:</span>
+<span class="sd">        :raises ValueError: If the map is invalid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">geogr</span> <span class="o">=</span> <span class="n">geogr</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="n">map_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geogr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;W&#39;</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">geogr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">geogr</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">geogr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">geogr</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="ow">and</span>
+                                                                    <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">geogr</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">geogr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geogr</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="n">map_len</span><span class="p">:</span>
+                    <span class="n">section</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">if</span> <span class="s1">&#39;W&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="k">for</span> <span class="n">num2</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span>
+                                <span class="n">col</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">ls</span><span class="o">.</span><span class="n">Water</span><span class="p">,</span> <span class="p">(</span><span class="n">num2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                            <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span>
+                                <span class="n">col</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">ls</span><span class="o">.</span><span class="n">Lowland</span><span class="p">,</span> <span class="p">(</span><span class="n">num2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                            <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span>
+                                <span class="n">col</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">ls</span><span class="o">.</span><span class="n">Desert</span><span class="p">,</span> <span class="p">(</span><span class="n">num2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                            <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+                                <span class="n">col</span> <span class="o">=</span> <span class="n">Tile</span><span class="p">(</span><span class="n">ls</span><span class="o">.</span><span class="n">Highland</span><span class="p">,</span> <span class="p">(</span><span class="n">num2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid landscape&#39;</span><span class="p">)</span>
+                            <span class="n">section</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid island-map&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Inconsistent line length&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid island-map&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">animals</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Carnivore&#39;</span><span class="p">:</span> <span class="n">Carnivore</span><span class="p">,</span>
+                        <span class="s1">&#39;Herbivore&#39;</span><span class="p">:</span> <span class="n">Herbivore</span><span class="p">}</span>
+
+<div class="viewcode-block" id="Island.add_animals"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.add_animals">[docs]</a>    <span class="k">def</span> <span class="nf">add_animals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that adds animals to the island</span>
+
+<span class="sd">        :param population: the animals that are being added to the island</span>
+<span class="sd">        :type population: list of dicts</span>
+<span class="sd">        :raises ValueError: If the location is inhabitable</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The list will have to follow the example below:</span>
+
+<span class="sd">             [{&#39;loc&#39;:(2,2), &#39;pop&#39;:[{&#39;species&#39;:&#39;Herbivore&#39;, &#39;age&#39;:5,&#39;weight&#39;:20},</span>
+<span class="sd">             {&#39;species&#39;:&#39;Carnivore&#39;,&#39;age&#39;:5, &#39;weight&#39;:20}]]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">animal_type</span> <span class="ow">in</span> <span class="n">population</span><span class="p">:</span>
+            <span class="n">get_location</span> <span class="o">=</span> <span class="n">animal_type</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span>
+            <span class="n">get_animals</span> <span class="o">=</span> <span class="n">animal_type</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">get_location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">get_location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">traversable</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="n">get_animals</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">animal</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Herbivore&#39;</span><span class="p">:</span>
+                        <span class="n">loc</span><span class="o">.</span><span class="n">add_herb_to_tile</span><span class="p">(</span><span class="n">Herbivore</span><span class="p">(</span><span class="n">animal</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span> <span class="n">animal</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]))</span>
+                    <span class="k">elif</span> <span class="n">animal</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Carnivore&#39;</span><span class="p">:</span>
+                        <span class="n">loc</span><span class="o">.</span><span class="n">add_carn_to_tile</span><span class="p">(</span><span class="n">Carnivore</span><span class="p">(</span><span class="n">animal</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span> <span class="n">animal</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Inhabitable landscape&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Island.yearly_cycle"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.yearly_cycle">[docs]</a>    <span class="k">def</span> <span class="nf">yearly_cycle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that runs the annual cycle of the island</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feeding</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">procreation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">migration</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aging</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_of_weight</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">death</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.feeding"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.feeding">[docs]</a>    <span class="k">def</span> <span class="nf">feeding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that feeds all the animals on the island</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">landscape</span><span class="o">.</span><span class="n">food</span><span class="p">:</span>
+                <span class="n">fodder</span> <span class="o">=</span> <span class="n">loc</span><span class="o">.</span><span class="n">landscape</span><span class="o">.</span><span class="n">f_max</span>
+                <span class="n">loc</span><span class="o">.</span><span class="n">feed_herbs</span><span class="p">(</span><span class="n">fodder</span><span class="p">)</span>
+            <span class="n">loc</span><span class="o">.</span><span class="n">feed_carns</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.procreation"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.procreation">[docs]</a>    <span class="k">def</span> <span class="nf">procreation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that calculates the births for all animals on the island, and adds them to</span>
+<span class="sd">        their respective lists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="p">:</span>
+            <span class="n">loc</span><span class="o">.</span><span class="n">birth_animal</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.migration"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.migration">[docs]</a>    <span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that calculates migration for all animals on the island, and adds them to their</span>
+<span class="sd">        respective lists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">loc</span><span class="o">.</span><span class="n">animals_migrate</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">loc</span><span class="o">.</span><span class="n">integrate</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.aging"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.aging">[docs]</a>    <span class="k">def</span> <span class="nf">aging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that ages all animals on the island</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="p">:</span>
+            <span class="n">loc</span><span class="o">.</span><span class="n">animals_age</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.loss_of_weight"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.loss_of_weight">[docs]</a>    <span class="k">def</span> <span class="nf">loss_of_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that calculate the weight-loss of all the animals on the island</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="p">:</span>
+            <span class="n">loc</span><span class="o">.</span><span class="n">animals_weight_loss</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Island.death"><a class="viewcode-back" href="../../Island.html#biosim.island.Island.death">[docs]</a>    <span class="k">def</span> <span class="nf">death</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function that calculates the deaths of the animals on the island</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiles</span><span class="p">:</span>
+            <span class="n">loc</span><span class="o">.</span><span class="n">animals_dead</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Biosim</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Animals.html">Animals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Landscape.html">Landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Island.html">Island</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Simulation.html">Simulation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Vegard Helland, Lydia Marie Lindgren.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

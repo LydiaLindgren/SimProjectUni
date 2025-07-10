@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Animals &#8212; Biosim 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Landscape" href="Landscape.html" />
+    <link rel="prev" title="Welcome to Biosims’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="animals">
+<h1>Animals<a class="headerlink" href="#animals" title="Permalink to this headline">¶</a></h1>
+<section id="module-biosim.animals">
+<span id="the-animal-module"></span><h2>The animal module<a class="headerlink" href="#module-biosim.animals" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="biosim.animals.Animal">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">biosim.animals.</span></span><span class="sig-name descname"><span class="pre">Animal</span></span><a class="reference internal" href="_modules/biosim/animals.html#Animal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class with the common traits of Herbivores and Carnivores</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Animal.eat">
+<span class="sig-name descname"><span class="pre">eat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.eat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal.eat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the weight of the animal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>amount</strong> (<em>int</em>) – The amount of food being eaten</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Animal.losing_weight">
+<span class="sig-name descname"><span class="pre">losing_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.losing_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal.losing_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that updates the weight of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Animal.migrate">
+<span class="sig-name descname"><span class="pre">migrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.migrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal.migrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that tells if an animal is going to migrate any given years</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Animal.update_age">
+<span class="sig-name descname"><span class="pre">update_age</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.update_age"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal.update_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that updates the age of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Animal.update_fitness">
+<span class="sig-name descname"><span class="pre">update_fitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Animal.update_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Animal.update_fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that updates the fitness of an animal. It is called before it is
+used in calculations</p>
+<div class="math notranslate nohighlight">
+\[q^±(x, x{\frac{1}{2}}, \phi) = \frac {1} {1 + e^{±\phi \times (x - x{\frac{1}{2}})}}\]</div>
+<p><span class="math notranslate nohighlight">\(\phi = 0\)</span> if <span class="math notranslate nohighlight">\(w \leq 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\phi = q^+ *q^-\)</span> otherwise</p>
+<p>formula above</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">biosim.animals.</span></span><span class="sig-name descname"><span class="pre">Carnivore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for the Carnivore-species. They will act as the hunter on the island,
+and will act according to their parameters and specifications. It will only eat Herbivores</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<em>int</em>) – weight of the animal</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – age of the animal (0 at birth)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.carn_birth">
+<span class="sig-name descname"><span class="pre">carn_birth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_carn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.carn_birth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.carn_birth" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for the Carnivore giving birth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num_carn</strong> – The number of varnivores in a cell/tile</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Carnivore or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.count_animals">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">count_animals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.count_animals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.count_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method that updates the number of instances of a species (Herbivore or
+Carnivore). The instance_count is used to track the number of animals currently in
+“existence”. It is called at “birth” or at the creation of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.death">
+<span class="sig-name descname"><span class="pre">death</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.death"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.death" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that calculates whether a Carnivore dies or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self.dead</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.disp_carns">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">disp_carns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.disp_carns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.disp_carns" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for printing the number of carnivores on the island.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.herb_killed">
+<span class="sig-name descname"><span class="pre">herb_killed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">herb_fitness</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.herb_killed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.herb_killed" title="Permalink to this definition">¶</a></dt>
+<dd><p>A funtction that calculates whether or not a Carnivore will kill (and later eat)
+a Herbivore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>herb_fitness</strong> – the fitness of the Herbivore in question</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.remove_animals">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">remove_animals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.remove_animals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.remove_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method that updates the number of instances of a species (Herbivore or
+Carnivore). The instance_count is used to track the number of animals currently in
+“existence”. It is called at the “death” of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Carnivore.set_params">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Carnivore.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Carnivore.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method that updates the number of instances of the Carnivore species.
+The instance_count is used to track the number of animals currently on the
+island. It is called at “birth” or at the creation of an animal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">biosim.animals.</span></span><span class="sig-name descname"><span class="pre">Herbivore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for the Herbivore-species. They will act as the food-source for the Carnivores,
+and will act according to their parameters and specifications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<em>int</em>) – weight of the animal</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – age of the animal (0 at birth)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.count_animals">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">count_animals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.count_animals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.count_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method that updates the number of instances of the Herbivore species.
+The instance_count is used to track the number of animals currently on the
+island. It is called at “birth” or at the creation of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.death">
+<span class="sig-name descname"><span class="pre">death</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.death"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.death" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for calculating if a herbivore dies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return self.dead</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.disp_herbs">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">disp_herbs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.disp_herbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.disp_herbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A classmethod that prints the current number of Herbivores on the island</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.herb_birth">
+<span class="sig-name descname"><span class="pre">herb_birth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_herb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.herb_birth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.herb_birth" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for herbivores giving birth
+:param num_herb: number of herbivores in a tile/cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Herbivore or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.remove_animals">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">remove_animals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.remove_animals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.remove_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method that updates the number of instances of Herbivore.
+The instance_count is used to track the number of animals currently on the
+Island. It is called at the death of an animal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.animals.Herbivore.set_params">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/animals.html#Herbivore.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.animals.Herbivore.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_params</strong> – dict of new parameters e.g {param:value}</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Biosim</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Animals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-biosim.animals">The animal module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Landscape.html">Landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Island.html">Island</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Simulation.html">Simulation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Biosims’s documentation!</a></li>
+      <li>Next: <a href="Landscape.html" title="next chapter">Landscape</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Vegard Helland, Lydia Marie Lindgren.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Animals.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

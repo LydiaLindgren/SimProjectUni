@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Simulation &#8212; Biosim 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Island" href="Island.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="simulation">
+<h1>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h1>
+<section id="module-biosim.simulation">
+<span id="the-simulation-module"></span><h2>The simulation module<a class="headerlink" href="#module-biosim.simulation" title="Permalink to this headline">¶</a></h2>
+<p>Template for BioSim class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">biosim.simulation.</span></span><span class="sig-name descname"><span class="pre">BioSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">island_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ini_pop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymax_animals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax_animals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hist_specs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates a BioSim project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>island_map</strong> – Multi-line string specifying island geography</p></li>
+<li><p><strong>ini_pop</strong> – List of dictionaries specifying initial population</p></li>
+<li><p><strong>seed</strong> – Integer used as random number seed</p></li>
+<li><p><strong>ymax_animals</strong> – Number specifying y-axis limit for graph showing animal numbers</p></li>
+<li><p><strong>cmax_animals</strong> – Dict specifying color-code limits for animal densities</p></li>
+<li><p><strong>hist_specs</strong> – Specifications for histograms, see below</p></li>
+<li><p><strong>vis_years</strong> – years between visualization updates (if 0, disable graphics)</p></li>
+<li><p><strong>img_dir</strong> – String with path to directory for figures</p></li>
+<li><p><strong>img_base</strong> – String with beginning of file name for figures</p></li>
+<li><p><strong>img_fmt</strong> – String with file type for figures, e.g. ‘png’</p></li>
+<li><p><strong>img_years</strong> – years between visualizations saved to files (default: vis_years)</p></li>
+<li><p><strong>log_file</strong> – If given, write animal counts to this file</p></li>
+</ul>
+</dd>
+</dl>
+<p>If ymax_animals is None, the y-axis limit should be adjusted automatically.
+If cmax_animals is None, fixed default values should be used.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>cmax_animals is a dict mapping species names to numbers, e.g.,</dt><dd><p>{‘Herbivore’: 50, ‘Carnivore’: 20}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>hist_specs is a dictionary with one entry per property for which a histogram shall be shown.
+For each property, a dictionary providing the maximum value and the bin width must be given.</p>
+<dl class="simple">
+<dt>If img_dir is None, no figures are written to file. Filenames are formed as</dt><dd><p>f’{os.path.join(img_dir, img_base}_{img_number:05d}.{img_fmt}’</p>
+</dd>
+</dl>
+<p>where img_number are consecutive image numbers starting from 0.</p>
+<p>img_dir and img_base must either be both None or both strings.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.add_population">
+<span class="sig-name descname"><span class="pre">add_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.add_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim.add_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a population to the island.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.make_movie">
+<span class="sig-name descname"><span class="pre">make_movie</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.make_movie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim.make_movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create MPEG4 movie from visualization images saved.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.num_animals">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_animals</span></span><a class="headerlink" href="#biosim.simulation.BioSim.num_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of animals on island.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.num_animals_per_species">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_animals_per_species</span></span><a class="headerlink" href="#biosim.simulation.BioSim.num_animals_per_species" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of animals per species in island, as dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.set_animal_parameters">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">set_animal_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.set_animal_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim.set_animal_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets parameters for animal species.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.set_landscape_parameters">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">set_landscape_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landscape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.set_landscape_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim.set_landscape_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets parameters for landscape type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_years</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/biosim/simulation.html#BioSim.simulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#biosim.simulation.BioSim.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs simulation while visualizing the result.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="biosim.simulation.BioSim.year">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">year</span></span><a class="headerlink" href="#biosim.simulation.BioSim.year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last year simulated.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Biosim</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Animals.html">Animals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Landscape.html">Landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Island.html">Island</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-biosim.simulation">The simulation module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Island.html" title="previous chapter">Island</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Vegard Helland, Lydia Marie Lindgren.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Simulation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
